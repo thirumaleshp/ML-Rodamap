@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive ML Roadmap for 2022</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: A single-page application with a fixed top navigation bar for the 5 main learning levels and an 'Overview' dashboard. The 'Overview' section will feature a donut chart visualizing time distribution and key stats. Each level's content will be in a separate section, revealed upon clicking the corresponding nav link. Inside each level, topics are structured in an interactive accordion, allowing users to expand/collapse details. This task-oriented design enhances usability by breaking down the dense information into manageable chunks, preventing overwhelm and providing a clear, non-linear exploration path, which is superior to a long, linear scroll for a structured guide like this. -->
+    <!-- Visualization & Content Choices: Report Info: Learning levels with estimated times. -> Goal: Compare time commitment. -> Viz: Donut Chart (Chart.js/Canvas). -> Interaction: Hover to see details. -> Justification: Excellent for showing parts of a whole (total time). Report Info: Hierarchical topics and resource links. -> Goal: Organize and inform. -> Presentation: Interactive Accordion (HTML/CSS/JS). -> Interaction: Click to expand/collapse. -> Justification: Manages content density and improves focus. Report Info: Key metrics (topics, projects). -> Goal: Inform. -> Viz: Statistic cards (HTML/Tailwind). -> Interaction: Static display. -> Justification: Highlights key data points quickly. All resource links are presented as clickable buttons for clear calls to action. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f7f4; }
+        .nav-active { color: #4f46e5; border-bottom-color: #4f46e5; }
+        .nav-inactive { color: #4b5563; border-bottom-color: transparent; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+        .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <header class="text-center py-8 md:py-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Machine Learning Roadmap 2022</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">An interactive guide to help you conquer the ML landscape in 6 months. Navigate through the levels to explore curated resources and projects.</p>
+        </header>
+
+        <nav class="sticky top-0 bg-f8f7f4/80 backdrop-blur-md z-10 border-b border-gray-200 mb-8">
+            <ul id="main-nav" class="flex items-center justify-center space-x-4 sm:space-x-8 text-sm sm:text-base font-semibold overflow-x-auto whitespace-nowrap">
+                <!-- Nav items will be injected by JS -->
+            </ul>
+        </nav>
+
+        <main id="content-area">
+            <!-- Content sections will be injected by JS -->
+        </main>
+        
+        <footer class="text-center py-8 mt-12 border-t border-gray-200">
+            <p class="text-gray-500">Created from the ML-Roadmap-for-2022 repository.</p>
+        </footer>
+
+    </div>
+
+    <script>
+    const roadmapData = [
+        {
+            level: "Overview",
+            title: "Roadmap Overview",
+            time: "6 Months",
+            intro: "This is your 6-month journey into Machine Learning, broken down into five distinct levels. This overview provides a summary of the entire roadmap, visualizing the time you'll spend in each phase and highlighting the key areas of focus. Start here to get a high-level understanding of the path ahead before diving into the specifics of each level.",
+            content: [],
+        },
+        {
+            level: "1",
+            title: "Testing the Waters",
+            time: "6-8 Weeks",
+            intro: "This foundational level is designed to get you familiar with the entire Machine Learning ecosystem. You will cover the essential programming skills with Python, learn to manipulate data with Numpy and Pandas, visualize it with Matplotlib and Seaborn, and grasp the basics of statistics and the data analysis process. By the end of this level, you will have a solid base to build upon.",
+            content: [
+                { topic: "Learn Python (2 weeks)", items: [
+                    { name: "Basics of Python", type: "playlist", url: "https://www.youtube.com/playlist?list=PLKnIA16_Rmvb1RYR-iTA_hzckhdONtSW4" },
+                    { name: "OOP Lecture 1", type: "video", url: "https://www.youtube.com/watch?v=1s869EfxoDo" },
+                    { name: "OOP Lecture 2", type: "video", url: "https://www.youtube.com/watch?v=8To-A6VPL90" },
+                    { name: "File Handling", type: "video", url: "https://www.youtube.com/watch?v=ixEeeNjjOJ0" },
+                    { name: "Exception Handling", type: "video", url: "https://www.youtube.com/watch?v=NIWwJbo-9_8" },
+                    { name: "Regular Expressions", type: "video", url: "https://www.youtube.com/watch?v=K8L6KVGG-7o" },
+                    { name: "Functional Programming", type: "video", url: "https://www.youtube.com/watch?v=SvK_GErE2nM" },
+                    { name: "Basics of Flask", type: "video", url: "https://www.youtube.com/watch?v=swHI1H7DVsQ" },
+                    { name: "Practice Problems", type: "doc", url: "https://docs.google.com/document/d/1E_xCNijOWZ4Bm7r7DVj-1OA-oUopEFmv4tRm0YNuFWQ/edit?usp=sharing" }
+                ]},
+                { topic: "Learn Numpy (3 Days)", items: [
+                    { name: "Numpy Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=CpPLLp3snK4&list=PLKnIA16_Rmvb-ToL3RQ_bwxG4_ND-0-DT" },
+                    { name: "Practice Problems", type: "repo", url: "https://github.com/rougier/numpy-100" }
+                ]},
+                { topic: "Learn Pandas (4 Days)", items: [
+                    { name: "Pandas Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=kq9Vmg5d7Sk&list=PLKnIA16_RmvbR85fgbfVRKOiMokUKVupy" },
+                    { name: "Practice Problems", type: "repo", url: "https://github.com/ajcr/100-pandas-puzzles" }
+                ]},
+                { topic: "Learn Data Visualization (1 Week)", items: [
+                    { name: "Matplotlib", type: "playlist", url: "https://www.youtube.com/playlist?list=PL-osiE80TeTvipOqomVEeZ1HRrcEvtZB_" },
+                    { name: "Seaborn", type: "playlist", url: "https://www.youtube.com/playlist?list=PLKnIA16_RmvbB1bFGjvS6a8T0mnqawejo" }
+                ]},
+                { topic: "Descriptive Statistics (4 Days)", items: [
+                    { name: "Statistics Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=tPhzDKjQBpo&list=PLKnIA16_RmvbVrE0eZO2bCaFln6jaNq-1" }
+                ]},
+                { topic: "Learn Data Analysis Process (1 week)", items: [
+                    { name: "Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=ZhacwtUR0SU&list=PLKnIA16_RmvZAqJzKstVHywcRNMn6pcGD" }
+                ]},
+                { topic: "Learn Exploratory Data Analysis (EDA) (1 Week)", items: [
+                    { name: "Understanding your data", type: "video", url: "https://www.youtube.com/watch?v=mJlRTUuVr04" },
+                    { name: "Univariate Analysis", type: "video", url: "https://www.youtube.com/watch?v=4HyTlbHUKSw" },
+                    { name: "Bivariate and Multivariate Analysis", type: "video", url: "https://www.youtube.com/watch?v=6D3VtEfCw7w" },
+                    { name: "Pandas Profiling", type: "video", url: "https://www.youtube.com/watch?v=E69Lg2ZgOxg" },
+                    { name: "EDA on House Prices Dataset", type: "kaggle", url: "https://www.kaggle.com/pmarcelino/comprehensive-data-exploration-with-python" },
+                ]},
+                { topic: "Learn Machine Learning Basics (1 Week)", items: [
+                    { name: "What is Machine Learning?", type: "video", url: "https://www.youtube.com/watch?v=ZftI2fEz0Fw" },
+                    { name: "AI vs ML vs DL", type: "video", url: "https://www.youtube.com/watch?v=1v3_AQ26jZ0" },
+                    { name: "Building an End to End Project", type: "video", url: "https://www.youtube.com/watch?v=dr7z7a_8lQw" }
+                ]}
+            ]
+        },
+        {
+            level: "2",
+            title: "Gaining Conceptual Depth",
+            time: "6-8 Weeks",
+            intro: "This level is focused on building the theoretical bedrock for your ML knowledge. You'll dive deep into the mathematics that powers machine learning algorithms, including advanced statistics, probability, linear algebra, and calculus. The core of this phase is an in-depth study of the most common and important ML algorithms, from Linear Regression to advanced clustering techniques.",
+            content: [
+                { topic: "Learn about tensors (1 Day)", items: [{ name: "What are Tensors?", type: "video", url: "https://www.youtube.com/watch?v=vVhD2EyS41Y" }] },
+                { topic: "Advance Statistics", items: [{ name: "Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=qtaqvPAeEJY&list=PLKnIA16_Rmvbe9wDJGXc28KKr6lp5Jn2g" }] },
+                { topic: "Probability Basics", items: [{ name: "Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=Ty7knppVo9E&list=PLKnIA16_RmvYNbPMB6ofVLRCcTPUAftdY" }] },
+                { topic: "Linear Algebra Basics", items: [{ name: "Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=e9h-ZZ_ahRg&list=PLKnIA16_RmvYu0fS_RuIB2eTbJcTFdrAA" }] },
+                { topic: "Basics of Calculus", items: [{ name: "Playlist (first 4 videos)", type: "playlist", url: "https://www.youtube.com/playlist?list=PLBE9407EA64E2C318" }] },
+                { topic: "Machine Learning Algorithms", items: [
+                    { name: "Linear Regression", type: "playlist", url: "https://www.youtube.com/watch?v=UZPfbG0jNec&list=PLKnIA16_Rmva-wY_HBh1gTH32ocu2SoTr" },
+                    { name: "Gradient Descent", type: "playlist", url: "https://www.youtube.com/watch?v=ORyfPJypKuU&list=PLKnIA16_RmvZvBbJex7T84XYRmor3IPK1" },
+                    { name: "Logistic Regression", type: "playlist", url: "https://www.youtube.com/watch?v=XNXzVfItWGY&list=PLKnIA16_Rmvb-ZTsM1QS-tlwmlkeGSnru" },
+                    { name: "Support Vector Machines", type: "playlist", url: "https://www.youtube.com/watch?v=ugTxMLjLS8M&list=PLKnIA16_RmvbOIFee-ra7U6jR2oIbCZBL" },
+                    { name: "Naive Bayes", type: "playlist", url: "https://www.youtube.com/watch?v=Ty7knppVo9E&list=PLKnIA16_RmvZ67wQaHoBuzXaDAfPz-a6l" },
+                    { name: "K Nearest Neighbors", type: "playlist", url: "https://www.youtube.com/watch?v=BYaoDZM1IcU&list=PLKnIA16_RmvZiE-lEdN5RDi18-u-T43zd" },
+                    { name: "Decision Trees", type: "playlist", url: "https://www.youtube.com/watch?v=gwgmSSTdiXs&list=PLKnIA16_RmvYGY_n9PP8zN-0LG9MoZRjU" },
+                    { name: "Ensemble Methods (Random Forest, Boosting...)", type: "playlist", url: "https://www.youtube.com/watch?v=bHK1fE_BUms&list=PLKnIA16_RmvZyqP3WGUo7iVziIIea_1bp" },
+                    { name: "Clustering (KMeans, DBSCAN...)", type: "playlist", url: "https://www.youtube.com/watch?v=5shTLzwAdEc&list=PLKnIA16_RmvbA_hYXlRgdCg9bn8ZQK2z9" },
+                ]},
+                { topic: "Core Concepts", items: [
+                    { name: "ML Metrics", type: "playlist", url: "https://www.youtube.com/watch?v=Ti7c-Hz7GSM&list=PLKnIA16_RmvZJGOqRjqhOhTEmQW3vDdbQ" },
+                    { name: "Bias-Variance Tradeoff", type: "video", url: "https://www.youtube.com/watch?v=74DU02Fyrhk" },
+                    { name: "Regularization", type: "playlist", url: "https://www.youtube.com/watch?v=aEow1QoTLo0&list=PLKnIA16_RmvZuSEZ24Wlm13QpsfLlJBM4" },
+                    { name: "Cross-Validation", type: "video", url: "https://www.youtube.com/watch?v=S5NkE-xgx98" }
+                ]}
+            ]
+        },
+        {
+            level: "3",
+            title: "Learning Practical Concepts",
+            time: "6-8 Weeks",
+            intro: "Theory meets practice in this critical phase. Here, you'll learn the hands-on techniques that are essential for real-world machine learning projects. This includes everything from data acquisition and preprocessing (handling missing values, feature engineering) to advanced modeling techniques, hyperparameter tuning, and finally, deploying your models for others to use.",
+            content: [
+                { topic: "Data Acquisition (2 Days)", items: [
+                    { name: "Web Scraping", type: "video", url: "https://www.youtube.com/watch?v=8NOdgjC1988" },
+                    { name: "Fetch data from API", type: "video", url: "https://www.youtube.com/watch?v=roTZJaxjnJc" }
+                ]},
+                { topic: "Feature Engineering", items: [
+                    { name: "Working with missing values", type: "video", url: "https://www.youtube.com/watch?v=aUnNWZorGmk" },
+                    { name: "Feature Scaling/Normalization", type: "video", url: "https://www.youtube.com/watch?v=1Yw9sC0PNwY" },
+                    { name: "Feature Encoding", type: "video", url: "https://www.youtube.com/watch?v=w2GglmYHfmM" },
+                    { name: "Feature Transformation", type: "video", url: "https://www.youtube.com/watch?v=cTjj3LE8E90" },
+                    { name: "Working with Outliers", type: "video", url: "https://www.youtube.com/watch?v=Lln1PKgGr_M" },
+                    { name: "Feature Selection", type: "video", url: "https://www.youtube.com/watch?v=xlHk4okO8Ls" }
+                ]},
+                { topic: "Advanced Modelling", items: [
+                    { name: "Working with Pipelines", type: "video", url: "https://www.youtube.com/watch?v=xOccYkgRV4Q" },
+                    { name: "Stacking and Blending", type: "video", url: "https://www.youtube.com/watch?v=O-aDHBGMqXA" },
+                    { name: "Model Tuning (GridSearchCV etc.)", type: "video", url: "https://www.youtube.com/watch?v=4Im0CT43QxY" }
+                ]},
+                { topic: "Common Challenges", items: [
+                    { name: "Working with imbalanced data", type: "video", url: "https://www.youtube.com/watch?v=JnlM4yLFNuo" },
+                    { name: "Handling Multicollinearity", type: "video", url: "https://www.youtube.com/watch?v=ekuD8JUdL6M" },
+                    { name: "Data Leakage", type: "doc", url: "https://machinelearningmastery.com/data-leakage-machine-learning/" }
+                ]},
+                { topic: "Serving your model (1 Week)", items: [
+                    { name: "Pickling your model", type: "video", url: "https://www.youtube.com/watch?v=yY1FXX_GSco" },
+                    { name: "Flask Tutorial", type: "video", url: "https://www.youtube.com/watch?v=swHI1H7DVsQ" },
+                    { name: "Streamlit Tutorial", type: "video", url: "https://www.youtube.com/watch?v=Klqn--Mu2pE" },
+                    { name: "Deploy on Heroku", type: "video", url: "https://www.youtube.com/watch?v=YncZ0WwxyzU" },
+                ]},
+                { topic: "Working with Large Datasets", items: [
+                    { name: "Out of core ML", type: "video", url: "https://www.youtube.com/watch?v=9e4nUuq2Hmg" }
+                ]}
+            ]
+        },
+        {
+            level: "4",
+            title: "Diving into Different Domains",
+            time: "6-8 Weeks",
+            intro: "With a strong foundation in general ML, this level allows you to specialize. You'll explore major domains like SQL for data management, Recommendation Systems, Natural Language Processing (NLP), and the fundamentals of Neural Networks. Mastering these areas will transition you from a generalist to a more specialized and versatile data scientist, capable of tackling a wider variety of complex problems.",
+            content: [
+                { topic: "SQL (2 Days)", items: [{ name: "Complete SQL Roadmap", type: "video", url: "https://www.youtube.com/watch?v=FGBme8dWR_M" }] },
+                { topic: "Recommendation Systems", items: [{ name: "Movie Recommender System", type: "project", url: "https://www.youtube.com/watch?v=1xtrIEwY_zY" }] },
+                { topic: "Association Rule Learning", items: [{ name: "Apriori Algorithm", type: "video", url: "https://www.youtube.com/watch?v=guVvtZ7ZClw" }] },
+                { topic: "Anomaly Detection", items: [{ name: "Lecture from Microsoft Research", type: "video", url: "https://www.youtube.com/watch?v=12Xq9OLdQwQ" }] },
+                { topic: "NLP", items: [
+                    { name: "Complete NLP Roadmap", type: "video", url: "https://www.youtube.com/watch?v=PKv_okm1H-k" },
+                    { name: "Complete NLP Playlist", type: "playlist", url: "https://www.youtube.com/watch?v=zlUpTlaxAKI&list=PLKnIA16_RmvZo7fp5kkIth6nRTeQQsjfX" }
+                ]},
+                { topic: "Fundamentals of Neural Network", items: [{ name: "Playlist", type: "playlist", url: "https://www.youtube.com/playlist?list=PLKnIA16_RmvYuZauWaPlRTC54KxSNLtNn" }] },
+                { topic: "Coming Soon", items: [
+                    { name: "Time Series", type: "text", url: "#" },
+                    { name: "Computer Vision", type: "text", url: "#" }
+                ]}
+            ]
+        },
+        {
+            level: "5",
+            title: "Pushing it with Projects",
+            time: "6-8 Weeks",
+            intro: "The final level is all about application and portfolio building. You will sharpen all the knowledge you've accumulated by building a variety of end-to-end projects. This is your opportunity to tackle real-world problems, from price prediction and fake news detection to building classifiers. Completing these projects will solidify your skills and provide tangible proof of your expertise to potential employers.",
+            content: [
+                { topic: "Project Guidance", items: [
+                    { name: "8 types of Projects for your portfolio", type: "video", url: "https://www.youtube.com/watch?v=SQHfry4xmdM" },
+                    { name: "How to select a project", type: "video", url: "https://www.youtube.com/watch?v=kH--k1VKFt4" }
+                ]},
+                { topic: "Project Examples", items: [
+                    { name: "Car Price Predictor", type: "project", url: "https://www.youtube.com/watch?v=iRCaMnR_bpA" },
+                    { name: "Laptop Price Predictor", type: "project", url: "https://www.youtube.com/watch?v=BgpM2IiCH6k" },
+                    { name: "IPL win probability predictor", type: "project", url: "https://www.youtube.com/watch?v=ygGknomFEWY" },
+                    { name: "Fake news prediction", type: "project", url: "https://www.youtube.com/watch?v=nacLBdyG6jE" }
+                ]},
+                 { topic: "More Project Resources", items: [
+                    { name: "500+ Project Link", type: "repo", url: "https://github.com/ashishpatel26/500-AI-Machine-learning-Deep-learning-Computer-vision-NLP-Projects-with-code" }
+                ]}
+            ]
+        }
+    ];
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const nav = document.getElementById('main-nav');
+        const contentArea = document.getElementById('content-area');
+        let activeTab = 'Overview';
+
+        const iconMap = {
+            playlist: '&#9654;&#xFE0E;',
+            video: '&#128250;',
+            doc: '&#128220;',
+            repo: '&#128187;',
+            kaggle: '&#129514;',
+            project: '&#128640;',
+            text: '&#x23F3;'
+        };
+        const colorMap = {
+            playlist: 'bg-indigo-100 text-indigo-800', video: 'bg-pink-100 text-pink-800',
+            doc: 'bg-blue-100 text-blue-800', repo: 'bg-gray-200 text-gray-800',
+            kaggle: 'bg-sky-100 text-sky-800', project: 'bg-green-100 text-green-800',
+            text: 'bg-yellow-100 text-yellow-800'
+        };
+
+        function renderContent(tab) {
+            contentArea.innerHTML = '';
+            const data = roadmapData.find(d => d.level === tab);
+            
+            if (!data) return;
+
+            const section = document.createElement('section');
+            section.id = `level-${data.level}`;
+            section.className = 'bg-white p-6 sm:p-8 rounded-xl shadow-lg';
+
+            if (data.level === 'Overview') {
+                section.innerHTML = `
+                    <div class="text-center">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-2">${data.title}</h2>
+                        <p class="text-gray-600 mb-8">${data.intro}</p>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <div class="chart-container">
+                                <canvas id="overviewChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 text-center">
+                            <div class="bg-indigo-50 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-indigo-600">${roadmapData.length - 1}</p>
+                                <p class="text-sm font-medium text-indigo-800">Learning Levels</p>
+                            </div>
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-green-600">${roadmapData.slice(1).reduce((acc, curr) => acc + curr.content.length, 0)}</p>
+                                <p class="text-sm font-medium text-green-800">Total Topics</p>
+                            </div>
+                            <div class="bg-pink-50 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-pink-600">~24</p>
+                                <p class="text-sm font-medium text-pink-800">Total Weeks</p>
+                            </div>
+                             <div class="bg-sky-50 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-sky-600">${roadmapData.flatMap(l => l.content.flatMap(c => c.items)).filter(i => i.type === 'project').length}</p>
+                                <p class="text-sm font-medium text-sky-800">Example Projects</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                contentArea.appendChild(section);
+                renderChart();
+            } else {
+                let contentHTML = `
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-3xl font-bold text-gray-800">${data.title}</h2>
+                            <p class="text-sm font-medium text-indigo-600">${data.time}</p>
+                        </div>
+                        <button id="toggle-all" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">Expand All</button>
+                    </div>
+                    <p class="text-gray-600 mb-8">${data.intro}</p>
+                    <div class="space-y-4">
+                `;
+                
+                data.content.forEach((cat, index) => {
+                    contentHTML += `
+                        <div class="border border-gray-200 rounded-lg">
+                            <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-t-lg">
+                                <span>${cat.topic}</span>
+                                <span class="transform transition-transform duration-300">&#9662;</span>
+                            </button>
+                            <div class="accordion-content">
+                                <ul class="p-4 border-t border-gray-200 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    ${cat.items.map(item => `
+                                        <li class="flex">
+                                            <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="flex-grow flex items-center space-x-3 p-3 rounded-md transition-all duration-200 hover:shadow-md hover:scale-105 ${colorMap[item.type]}">
+                                                <span class="text-lg">${iconMap[item.type] || ''}</span>
+                                                <span class="font-medium text-sm">${item.name}</span>
+                                            </a>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                });
+                contentHTML += '</div>';
+                section.innerHTML = contentHTML;
+                contentArea.appendChild(section);
+            }
+        }
+
+        function setupEventListeners() {
+            document.querySelectorAll('.accordion-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const icon = button.querySelector('span:last-child');
+                    button.parentElement.classList.toggle('bg-white');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+
+            const toggleAllButton = document.getElementById('toggle-all');
+            if (toggleAllButton) {
+                toggleAllButton.addEventListener('click', () => {
+                    const accordions = document.querySelectorAll('.accordion-toggle');
+                    const isExpanding = toggleAllButton.textContent === 'Expand All';
+                    toggleAllButton.textContent = isExpanding ? 'Collapse All' : 'Expand All';
+                    accordions.forEach(button => {
+                        const content = button.nextElementSibling;
+                        const icon = button.querySelector('span:last-child');
+                        if (isExpanding) {
+                            content.style.maxHeight = content.scrollHeight + "px";
+                            icon.style.transform = 'rotate(180deg)';
+                        } else {
+                            content.style.maxHeight = null;
+                            icon.style.transform = 'rotate(0deg)';
+                        }
+                    });
+                });
+            }
+        }
+
+        function renderNav() {
+            nav.innerHTML = roadmapData.map(d => `
+                <li>
+                    <button data-tab="${d.level}" class="nav-link py-3 border-b-2 transition-colors duration-200 ${d.level === activeTab ? 'nav-active' : 'nav-inactive'}">
+                       ${d.level === 'Overview' ? 'Overview' : `Level ${d.level}`}
+                    </button>
+                </li>
+            `).join('');
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    activeTab = e.target.dataset.tab;
+                    document.querySelector('.nav-active').classList.replace('nav-active', 'nav-inactive');
+                    e.target.classList.replace('nav-inactive', 'nav-active');
+                    renderContent(activeTab);
+                    setupEventListeners();
+                });
+            });
+        }
+        
+        function renderChart() {
+            const chartCanvas = document.getElementById('overviewChart');
+            if (!chartCanvas) return;
+            const ctx = chartCanvas.getContext('2d');
+            const levels = roadmapData.filter(d => d.level !== 'Overview');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: levels.map(l => `${l.title} (${l.time})`),
+                    datasets: [{
+                        label: 'Time Allocation',
+                        data: levels.map(l => {
+                            const time = l.time.split('-').map(t=>parseInt(t));
+                            return (time[0] + (time[1] || time[0])) / 2;
+                        }),
+                        backgroundColor: [
+                            'rgba(99, 102, 241, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(236, 72, 153, 0.7)',
+                            'rgba(244, 114, 182, 0.7)',
+                            'rgba(34, 211, 238, 0.7)'
+                        ],
+                        borderColor: '#f8f7f4',
+                        borderWidth: 4,
+                        hoverOffset: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '60%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: {
+                                    size: 12,
+                                    family: "'Inter', sans-serif"
+                                },
+                                boxWidth: 15,
+                                padding: 20,
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: '#1f2937',
+                            titleFont: { size: 14, weight: 'bold'},
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 4,
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.raw + ' Weeks (Est.)';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        renderNav();
+        renderContent(activeTab);
+        setupEventListeners();
+
+    });
+    </script>
+</body>
+</html>
