@@ -7,29 +7,53 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Warm Neutrals -->
-    <!-- Application Structure Plan: A single-page application with a fixed top navigation bar for the 5 main learning levels and an 'Overview' dashboard. The 'Overview' section will feature a donut chart visualizing time distribution and key stats. Each level's content will be in a separate section, revealed upon clicking the corresponding nav link. Inside each level, topics are structured in an interactive accordion, allowing users to expand/collapse details. This task-oriented design enhances usability by breaking down the dense information into manageable chunks, preventing overwhelm and providing a clear, non-linear exploration path, which is superior to a long, linear scroll for a structured guide like this. -->
-    <!-- Visualization & Content Choices: Report Info: Learning levels with estimated times. -> Goal: Compare time commitment. -> Viz: Donut Chart (Chart.js/Canvas). -> Interaction: Hover to see details. -> Justification: Excellent for showing parts of a whole (total time). Report Info: Hierarchical topics and resource links. -> Goal: Organize and inform. -> Presentation: Interactive Accordion (HTML/CSS/JS). -> Interaction: Click to expand/collapse. -> Justification: Manages content density and improves focus. Report Info: Key metrics (topics, projects). -> Goal: Inform. -> Viz: Statistic cards (HTML/Tailwind). -> Interaction: Static display. -> Justification: Highlights key data points quickly. All resource links are presented as clickable buttons for clear calls to action. -->
+    <!-- Chosen Palette: Warm Neutrals (Light Mode) / Dark Grays & Blues (Dark Mode) -->
+    <!-- Application Structure Plan: A single-page application with a fixed top navigation bar for the 5 main learning levels and an 'Overview' dashboard. The 'Overview' section will feature a donut chart visualizing time distribution and key stats. Each level's content will be in a separate section, revealed upon clicking the corresponding nav link. Inside each level, topics are structured in an interactive accordion, allowing users to expand/collapse details. This task-oriented design enhances usability by breaking down the dense information into manageable chunks, preventing overwhelm and providing a clear, non-linear exploration path, which is superior to a long, linear scroll for a structured guide like this. Dark mode is added with a toggle and persistent storage. -->
+    <!-- Visualization & Content Choices: Report Info: Learning levels with estimated times. -> Goal: Compare time commitment. -> Viz: Donut Chart (Chart.js/Canvas). -> Interaction: Hover to see details. -> Justification: Excellent for showing parts of a whole (total time). Report Info: Hierarchical topics and resource links. -> Goal: Organize and inform. -> Presentation: Interactive Accordion (HTML/CSS/JS). -> Interaction: Click to expand/collapse. -> Justification: Manages content density and improves focus. Report Info: Key metrics (topics, projects). -> Goal: Inform. -> Viz: Statistic cards (HTML/Tailwind). -> Interaction: Static display. -> Justification: Highlights key data points quickly. All resource links are presented as clickable buttons for clear calls to action. Chart colors dynamically adjust for dark mode. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8f7f4; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8f7f4; color: #374151; }
+        .dark body { background-color: #1a202c; color: #e2e8f0; }
         .nav-active { color: #4f46e5; border-bottom-color: #4f46e5; }
+        .dark .nav-active { color: #818cf8; border-bottom-color: #818cf8; }
         .nav-inactive { color: #4b5563; border-bottom-color: transparent; }
+        .dark .nav-inactive { color: #9ca3af; border-bottom-color: transparent; }
         .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
         .chart-container { position: relative; width: 100%; max-width: 400px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
         @media (min-width: 768px) { .chart-container { height: 350px; } }
+
+        /* Tailwind Dark Mode Configuration */
+        html.dark {
+            /* This class is added to the html tag by JavaScript */
+        }
     </style>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'f8f7f4': '#f8f7f4', /* Light background */
+                        '1a202c': '#1a202c', /* Dark background */
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="text-gray-800">
+<body class="text-gray-800 dark:text-gray-200 bg-f8f7f4 dark:bg-1a202c transition-colors duration-300">
 
     <div id="app" class="container mx-auto px-4 sm:px-6 lg:px-8">
         
-        <header class="text-center py-8 md:py-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Machine Learning Roadmap 2022</h1>
-            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">An interactive guide to help you conquer the ML landscape in 6 months. Navigate through the levels to explore curated resources and projects.</p>
+        <header class="text-center py-8 md:py-12 relative">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100">Machine Learning Roadmap 2022</h1>
+            <p class="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">An interactive guide to help you conquer the ML landscape in 6 months. Navigate through the levels to explore curated resources and projects.</p>
+            <button id="darkModeToggle" class="absolute top-4 right-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 shadow-md hover:scale-105 transition-transform duration-200">
+                &#9728; <!-- Sun icon for light mode -->
+            </button>
         </header>
 
-        <nav class="sticky top-0 bg-f8f7f4/80 backdrop-blur-md z-10 border-b border-gray-200 mb-8">
+        <nav class="sticky top-0 bg-f8f7f4/80 dark:bg-1a202c/80 backdrop-blur-md z-10 border-b border-gray-200 dark:border-gray-700 mb-8">
             <ul id="main-nav" class="flex items-center justify-center space-x-4 sm:space-x-8 text-sm sm:text-base font-semibold overflow-x-auto whitespace-nowrap">
                 <!-- Nav items will be injected by JS -->
             </ul>
@@ -39,8 +63,8 @@
             <!-- Content sections will be injected by JS -->
         </main>
         
-        <footer class="text-center py-8 mt-12 border-t border-gray-200">
-            <p class="text-gray-500">Created from the ML-Roadmap-for-2022 repository.</p>
+        <footer class="text-center py-8 mt-12 border-t border-gray-200 dark:border-gray-700">
+            <p class="text-gray-500 dark:text-gray-400">Created from the ML-Roadmap-for-2022 repository.</p>
             <!-- <a href="https://thirumalesh.xyz" target="_blank" class="text-gray-500">@thirumalesh</a> -->
         </footer>
 
@@ -217,9 +241,13 @@
         }
     ];
 
+    let myChart = null; // To store the Chart.js instance
+
     document.addEventListener('DOMContentLoaded', () => {
         const nav = document.getElementById('main-nav');
         const contentArea = document.getElementById('content-area');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const htmlElement = document.documentElement;
         let activeTab = 'Overview';
 
         const iconMap = {
@@ -232,11 +260,44 @@
             text: '&#x23F3;'
         };
         const colorMap = {
-            playlist: 'bg-indigo-100 text-indigo-800', video: 'bg-pink-100 text-pink-800',
-            doc: 'bg-blue-100 text-blue-800', repo: 'bg-gray-200 text-gray-800',
-            kaggle: 'bg-sky-100 text-sky-800', project: 'bg-green-100 text-green-800',
-            text: 'bg-yellow-100 text-yellow-800'
+            playlist: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-700 dark:text-indigo-100',
+            video: 'bg-pink-100 text-pink-800 dark:bg-pink-700 dark:text-pink-100',
+            doc: 'bg-blue-100 text-blue-800 dark:bg-blue-700 dark:text-blue-100',
+            repo: 'bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-100',
+            kaggle: 'bg-sky-100 text-sky-800 dark:bg-sky-700 dark:text-sky-100',
+            project: 'bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100',
+            text: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-700 dark:text-yellow-100'
         };
+
+        // Dark mode logic
+        const enableDarkMode = () => {
+            htmlElement.classList.add('dark');
+            darkModeToggle.innerHTML = '&#127769;'; // Moon icon
+            localStorage.setItem('theme', 'dark');
+            updateChartColors();
+        };
+
+        const disableDarkMode = () => {
+            htmlElement.classList.remove('dark');
+            darkModeToggle.innerHTML = '&#9728;'; // Sun icon
+            localStorage.setItem('theme', 'light');
+            updateChartColors();
+        };
+
+        darkModeToggle.addEventListener('click', () => {
+            if (htmlElement.classList.contains('dark')) {
+                disableDarkMode();
+            } else {
+                enableDarkMode();
+            }
+        });
+
+        // Check for saved theme preference
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            enableDarkMode();
+        } else {
+            disableDarkMode();
+        }
 
         function renderContent(tab) {
             contentArea.innerHTML = '';
@@ -246,13 +307,13 @@
 
             const section = document.createElement('section');
             section.id = `level-${data.level}`;
-            section.className = 'bg-white p-6 sm:p-8 rounded-xl shadow-lg';
+            section.className = 'bg-white dark:bg-gray-800 p-6 sm:p-8 rounded-xl shadow-lg dark:shadow-none border border-gray-200 dark:border-gray-700 transition-colors duration-300';
 
             if (data.level === 'Overview') {
                 section.innerHTML = `
                     <div class="text-center">
-                        <h2 class="text-3xl font-bold text-gray-800 mb-2">${data.title}</h2>
-                        <p class="text-gray-600 mb-8">${data.intro}</p>
+                        <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">${data.title}</h2>
+                        <p class="text-gray-600 dark:text-gray-400 mb-8">${data.intro}</p>
                     </div>
                     <div class="grid md:grid-cols-2 gap-8 items-center">
                         <div>
@@ -261,21 +322,21 @@
                             </div>
                         </div>
                         <div class="grid grid-cols-2 gap-4 text-center">
-                            <div class="bg-indigo-50 p-4 rounded-lg">
-                                <p class="text-3xl font-bold text-indigo-600">${roadmapData.length - 1}</p>
-                                <p class="text-sm font-medium text-indigo-800">Learning Levels</p>
+                            <div class="bg-indigo-50 dark:bg-indigo-900 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-indigo-600 dark:text-indigo-300">${roadmapData.length - 1}</p>
+                                <p class="text-sm font-medium text-indigo-800 dark:text-indigo-200">Learning Levels</p>
                             </div>
-                            <div class="bg-green-50 p-4 rounded-lg">
-                                <p class="text-3xl font-bold text-green-600">${roadmapData.slice(1).reduce((acc, curr) => acc + curr.content.length, 0)}</p>
-                                <p class="text-sm font-medium text-green-800">Total Topics</p>
+                            <div class="bg-green-50 dark:bg-green-900 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-green-600 dark:text-green-300">${roadmapData.slice(1).reduce((acc, curr) => acc + curr.content.length, 0)}</p>
+                                <p class="text-sm font-medium text-green-800 dark:text-green-200">Total Topics</p>
                             </div>
-                            <div class="bg-pink-50 p-4 rounded-lg">
-                                <p class="text-3xl font-bold text-pink-600">~24</p>
-                                <p class="text-sm font-medium text-pink-800">Total Weeks</p>
+                            <div class="bg-pink-50 dark:bg-pink-900 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-pink-600 dark:text-pink-300">~24</p>
+                                <p class="text-sm font-medium text-pink-800 dark:text-pink-300">Total Weeks</p>
                             </div>
-                             <div class="bg-sky-50 p-4 rounded-lg">
-                                <p class="text-3xl font-bold text-sky-600">${roadmapData.flatMap(l => l.content.flatMap(c => c.items)).filter(i => i.type === 'project').length}</p>
-                                <p class="text-sm font-medium text-sky-800">Example Projects</p>
+                             <div class="bg-sky-50 dark:bg-sky-900 p-4 rounded-lg">
+                                <p class="text-3xl font-bold text-sky-600 dark:text-sky-300">${roadmapData.flatMap(l => l.content.flatMap(c => c.items)).filter(i => i.type === 'project').length}</p>
+                                <p class="text-sm font-medium text-sky-800 dark:text-sky-300">Example Projects</p>
                             </div>
                         </div>
                     </div>
@@ -286,24 +347,24 @@
                 let contentHTML = `
                     <div class="flex justify-between items-center mb-6">
                         <div>
-                            <h2 class="text-3xl font-bold text-gray-800">${data.title}</h2>
-                            <p class="text-sm font-medium text-indigo-600">${data.time}</p>
+                            <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">${data.title}</h2>
+                            <p class="text-sm font-medium text-indigo-600 dark:text-indigo-400">${data.time}</p>
                         </div>
-                        <button id="toggle-all" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800">Expand All</button>
+                        <button id="toggle-all" class="text-sm font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300">Expand All</button>
                     </div>
-                    <p class="text-gray-600 mb-8">${data.intro}</p>
+                    <p class="text-gray-600 dark:text-gray-400 mb-8">${data.intro}</p>
                     <div class="space-y-4">
                 `;
                 
                 data.content.forEach((cat, index) => {
                     contentHTML += `
-                        <div class="border border-gray-200 rounded-lg">
-                            <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 rounded-t-lg">
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg">
+                            <button class="accordion-toggle w-full flex justify-between items-center p-4 text-left font-semibold text-gray-700 dark:text-gray-200 bg-gray-50 dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 rounded-t-lg">
                                 <span>${cat.topic}</span>
                                 <span class="transform transition-transform duration-300">&#9662;</span>
                             </button>
                             <div class="accordion-content">
-                                <ul class="p-4 border-t border-gray-200 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                <ul class="p-4 border-t border-gray-200 dark:border-gray-700 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     ${cat.items.map(item => `
                                         <li class="flex">
                                             <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="flex-grow flex items-center space-x-3 p-3 rounded-md transition-all duration-200 hover:shadow-md hover:scale-105 ${colorMap[item.type]}">
@@ -329,6 +390,7 @@
                     const content = button.nextElementSibling;
                     const icon = button.querySelector('span:last-child');
                     button.parentElement.classList.toggle('bg-white');
+                    button.parentElement.classList.toggle('dark:bg-gray-800'); // Toggle dark mode background for expanded accordion
                     if (content.style.maxHeight) {
                         content.style.maxHeight = null;
                         icon.style.transform = 'rotate(0deg)';
@@ -351,9 +413,13 @@
                         if (isExpanding) {
                             content.style.maxHeight = content.scrollHeight + "px";
                             icon.style.transform = 'rotate(180deg)';
+                            button.parentElement.classList.add('bg-white');
+                            button.parentElement.classList.add('dark:bg-gray-800');
                         } else {
                             content.style.maxHeight = null;
                             icon.style.transform = 'rotate(0deg)';
+                            button.parentElement.classList.remove('bg-white');
+                            button.parentElement.classList.remove('dark:bg-gray-800');
                         }
                     });
                 });
@@ -380,13 +446,26 @@
             });
         }
         
+        function updateChartColors() {
+            if (myChart) {
+                myChart.destroy(); // Destroy existing chart to re-render with new colors
+            }
+            renderChart(); // Re-render chart
+        }
+
         function renderChart() {
             const chartCanvas = document.getElementById('overviewChart');
             if (!chartCanvas) return;
             const ctx = chartCanvas.getContext('2d');
             const levels = roadmapData.filter(d => d.level !== 'Overview');
             
-            new Chart(ctx, {
+            const isDarkMode = htmlElement.classList.contains('dark');
+            const textColor = isDarkMode ? '#e2e8f0' : '#374151';
+            const borderColor = isDarkMode ? '#1a202c' : '#f8f7f4';
+            const tooltipBgColor = isDarkMode ? '#e2e8f0' : '#1f2937';
+            const tooltipTextColor = isDarkMode ? '#1f2937' : '#e2e8f0';
+
+            myChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
                     labels: levels.map(l => `${l.title} (${l.time})`),
@@ -397,13 +476,13 @@
                             return (time[0] + (time[1] || time[0])) / 2;
                         }),
                         backgroundColor: [
-                            'rgba(99, 102, 241, 0.7)',
-                            'rgba(139, 92, 246, 0.7)',
-                            'rgba(236, 72, 153, 0.7)',
-                            'rgba(244, 114, 182, 0.7)',
-                            'rgba(34, 211, 238, 0.7)'
+                            'rgba(99, 102, 241, 0.7)', // Indigo
+                            'rgba(139, 92, 246, 0.7)', // Purple
+                            'rgba(236, 72, 153, 0.7)', // Pink
+                            'rgba(244, 114, 182, 0.7)', // Rose
+                            'rgba(34, 211, 238, 0.7)'  // Cyan
                         ],
-                        borderColor: '#f8f7f4',
+                        borderColor: borderColor,
                         borderWidth: 4,
                         hoverOffset: 8
                     }]
@@ -420,14 +499,17 @@
                                     size: 12,
                                     family: "'Inter', sans-serif"
                                 },
+                                color: textColor, // Legend text color
                                 boxWidth: 15,
                                 padding: 20,
                             }
                         },
                         tooltip: {
-                            backgroundColor: '#1f2937',
+                            backgroundColor: tooltipBgColor,
                             titleFont: { size: 14, weight: 'bold'},
                             bodyFont: { size: 12 },
+                            bodyColor: tooltipTextColor, // Tooltip body text color
+                            titleColor: tooltipTextColor, // Tooltip title text color
                             padding: 10,
                             cornerRadius: 4,
                             callbacks: {
